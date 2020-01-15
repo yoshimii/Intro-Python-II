@@ -2,7 +2,8 @@
 # currently.
 
 class Player:
-    def __init__(self, name, condition, location):
-        self.name = name
-        self.condition = condition
-        self.location = location
+    def __init__(self,player_location):
+        self.location = player_location
+
+    def __repr__(self):
+        return self.location

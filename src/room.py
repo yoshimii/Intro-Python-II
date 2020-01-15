@@ -2,8 +2,9 @@
 # description attributes.
 
 class Room:
-    def __init__(self, name, direction):
-        self.name = name
-        self.direction = direction
-        # self.mood = mood
+    def __init__(self, room_name, room_desc):
+        self.name = room_name
+        self.description = room_desc
         
+    def __repr__(self):
+        return self.description
