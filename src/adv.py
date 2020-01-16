@@ -44,26 +44,33 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-# print('MOVING NORTH TO:', room['outside'].n_to)
+# Load room with items
+room['outside'].items = ['stick', 'lantern oil']
+room['foyer'].items = ['leather boots']
+room['overlook'].items = ['telescope', 'binoculars']
+room['narrow'].items = ['painting']
+room['treasure'].items = ['dry blood']
+
 #
 # Main
 #
 
-
-
-# Start in outside room
-
+# Start in outside room with an empty rucksack
 location = 'outside'
+items = ['rucksack']
 
 # Make a new player object that is currently in the 'outside' room.
 
 class PlayerOne(Player):
-    def __init__(self, name, condition, location):
+    def __init__(self, name, condition, location, items):
         self.name = name
         self.condition = condition
         self.location = location
+        self.items = items
         
-player_info = PlayerOne('Dylan', 'healthy', location)
+player_info = PlayerOne('Dylan', 'healthy', location, items)
+print(player_info.items)
+
 SCREEN_WIDTH = 50
 
 # Write a loop that:
@@ -121,7 +128,33 @@ def moveDirection(direction):
         print('Current room: ', player_info.location)
         print(f'You are currently in {player_info.location}:\n\nRoom description:\n{room[player_info.location]}\n\n')            
     else: print("You can't go that way")
+# look function that checks room for items
+
+def look():
+    if len(room[player_info.location].items) == 0:
+        print('Oof dusty.')
+    else:
+        print('The horrors you see are: ')
+        for i in room[player_info.location].items:
+            print(i) 
+
+def take():
+    if len(room[player_info.location].items) == 0:
+        print("Room's been cleaned out. By sombody... \n or something! Or was it me? <<hiccup>>")
+    else:    
+        player_info.items = player_info.items + room[player_info.location].items
+        room[player_info.location].items = []
+        print("You've added some weight to your rucksack. (type 'items' to see what you have)")
+
+def check_bag():
+    if len(player_info.items) == 0:
+        print('nothing in here yet\nkeep your eyes peeled')
+    else:
+        print('Your items:')
+        for i in player_info.items:
+            print(i)
     
+                
 class GameControls(cmd.Cmd):
     prompt = '\n>> '
 
@@ -152,6 +185,14 @@ class GameControls(cmd.Cmd):
     def do_location(self, arg):
         """Where am I?"""
         print(player_info.location)
+    def do_look(self, arg):
+        """Be a nosy dungeon dweller"""
+        look()
+    def do_take(self, arg):
+        take()
+    def do_items(self, arg):
+        """What's in the old bag?"""
+        check_bag()
             
     def help_combat(self):
         print('Combat is not implemented in this program.')
@@ -165,4 +206,4 @@ if __name__ == '__main__':
     print()
     print('(Type "help" for commands.)')
     GameControls().cmdloop()
-    print('Thanks for playing!')
+    print('Visit us again...')
