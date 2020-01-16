@@ -32,7 +32,6 @@ player = {
     "location": Player(location)
 }
 
-print('Player Location: ', player['location'])
 
 # Link rooms together
 
@@ -45,21 +44,16 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-
+# print('MOVING NORTH TO:', room['outside'].n_to)
 #
 # Main
 #
 
-SCREEN_WIDTH = 80
 
-# desc = 'The town square is a large open space with a fountain in the center. Streets lead in all directions.'
-
-# for line in textwrap.wrap(desc, SCREEN_WIDTH):
-#     print(line)
 
 # Start in outside room
 
-location = 'Outside Cave Entrance'
+location = 'outside'
 
 # Make a new player object that is currently in the 'outside' room.
 
@@ -68,34 +62,35 @@ class PlayerOne(Player):
         self.name = name
         self.condition = condition
         self.location = location
+        
 player_info = PlayerOne('Dylan', 'healthy', location)
+SCREEN_WIDTH = 50
 
-print(player_info)
 # Write a loop that:
-#
 # * Prints the current room name
-def status(location):
-    print('hi from the outside')
-    
 # * Prints the current description (the textwrap module might be useful here).
-
 # * Waits for user input and decides what to do.
-#
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
-#
 # If the user enters "q", quit the game.
-
-status(location)
 
 def moveDirection(direction):
     """A helper function that changes the location of the player."""
-    print(PlayerOne.location)
-
-
-
-# for i in room:
-#     print(f'You are currently in {i}:\n\nRoom description:\n{room[i]}\n\n')
+    if direction == 'north':
+        
+        
+        if hasattr(room[player_info.location], 'n_to'):
+            # cur_rm_desc = room[player_info.location]
+            to_rm_desc = room[player_info.location].n_to
+            for i in room.keys():                
+                if player_info.location == i and hasattr(room[player_info.location], 'n_to'):                    
+                    for i in room.keys():
+                        if to_rm_desc == room[i]:
+                            player_info.location = i
+        print('Current room: ', player_info.location)
+        print(f'You are currently in {player_info.location}:\n\nRoom description:\n{room[player_info.location]}\n\n')
+                
+    else: print("You can't go that way")
     
 class GameControls(cmd.Cmd):
     prompt = '\n>> '
@@ -107,12 +102,24 @@ class GameControls(cmd.Cmd):
     # A very simple "quit" command to terminate the program:
     def do_quit(self, arg):
         """Quit the game."""
-        return True # this exits the Cmd application loop in TextAdventureCmd.cmdloop()
+        return True # this exits the Cmd application loop in GameControls.cmdloop()
     
     def do_north(self, arg):
         """Move somewhere. Quietly."""
         moveDirection('north')
-
+    
+    def do_south(self, arg):
+        """Move somewhere. Quietly."""
+        moveDirection('south')
+    
+    def do_east(self, arg):
+        """Move somewhere. Quietly."""
+        moveDirection('east')
+    
+    def do_west(self, arg):
+        """Move somewhere. Quietly."""
+        moveDirection('west')
+            
     def help_combat(self):
         print('Combat is not implemented in this program.')
         
@@ -120,7 +127,9 @@ if __name__ == '__main__':
     print('Space Survival Horror Game!')
     print('===========================')
     print()
-    print('(Type "help" for commands.)')
+    print('Game Controls:')
+    print('north south east west')
     print()
+    print('(Type "help" for commands.)')
     GameControls().cmdloop()
     print('Thanks for playing!')
