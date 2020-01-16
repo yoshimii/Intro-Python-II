@@ -76,9 +76,7 @@ SCREEN_WIDTH = 50
 
 def moveDirection(direction):
     """A helper function that changes the location of the player."""
-    if direction == 'north':
-        
-        
+    if direction == 'north' and hasattr(room[player_info.location], 'n_to') and (room[player_info.location].n_to != room[player_info.location]):        
         if hasattr(room[player_info.location], 'n_to'):
             # cur_rm_desc = room[player_info.location]
             to_rm_desc = room[player_info.location].n_to
@@ -89,7 +87,39 @@ def moveDirection(direction):
                             player_info.location = i
         print('Current room: ', player_info.location)
         print(f'You are currently in {player_info.location}:\n\nRoom description:\n{room[player_info.location]}\n\n')
-                
+    elif direction == 'south' and hasattr(room[player_info.location], 's_to') and (room[player_info.location].s_to != room[player_info.location]):        
+        if hasattr(room[player_info.location], 's_to'):
+            # cur_rm_desc = room[player_info.location]
+            to_rm_desc = room[player_info.location].s_to
+            for i in room.keys():                
+                if player_info.location == i and hasattr(room[player_info.location], 's_to'):                    
+                    for i in room.keys():
+                        if to_rm_desc == room[i]:
+                            player_info.location = i
+        print('Current room: ', player_info.location)
+        print(f'You are currently in {player_info.location}:\n\nRoom description:\n{room[player_info.location]}\n\n')
+    elif direction == 'east' and hasattr(room[player_info.location], 'e_to') and (room[player_info.location].e_to != room[player_info.location]):        
+        if hasattr(room[player_info.location], 'e_to'):
+            # cur_rm_desc = room[player_info.location]
+            to_rm_desc = room[player_info.location].e_to
+            for i in room.keys():                
+                if player_info.location == i and hasattr(room[player_info.location], 'e_to'):                    
+                    for i in room.keys():
+                        if to_rm_desc == room[i]:
+                            player_info.location = i
+        print('Current room: ', player_info.location)
+        print(f'You are currently in {player_info.location}:\n\nRoom description:\n{room[player_info.location]}\n\n')
+    elif direction == 'west' and hasattr(room[player_info.location], 'w_to') and (room[player_info.location].w_to != room[player_info.location]):        
+        if hasattr(room[player_info.location], 'w_to'):
+            # cur_rm_desc = room[player_info.location]
+            to_rm_desc = room[player_info.location].w_to
+            for i in room.keys():                
+                if player_info.location == i and hasattr(room[player_info.location], 'w_to'):                    
+                    for i in room.keys():
+                        if to_rm_desc == room[i]:
+                            player_info.location = i
+        print('Current room: ', player_info.location)
+        print(f'You are currently in {player_info.location}:\n\nRoom description:\n{room[player_info.location]}\n\n')            
     else: print("You can't go that way")
     
 class GameControls(cmd.Cmd):
@@ -119,6 +149,9 @@ class GameControls(cmd.Cmd):
     def do_west(self, arg):
         """Move somewhere. Quietly."""
         moveDirection('west')
+    def do_location(self, arg):
+        """Where am I?"""
+        print(player_info.location)
             
     def help_combat(self):
         print('Combat is not implemented in this program.')
