@@ -153,19 +153,28 @@ def check_bag():
         print('Your items:')
         for i in player_info.items:
             print(i)
-    
+ 
 def drop():
     if len(player_info.items) == 0:
         print("There's nothing to drop.")
-    else:
-        ct = 0
+    elif len(player_info.items) > 0:
+        ct = -1
         for i in player_info.items:
-            print(f'{ct++1} {i}')
-            item = input('Select a number to drop an item. (ex: 2)')
-            player_info.items.remove(item)
+            ct += 1            
+            print(ct, i)
+        item = int(input('Select a number to drop an item. (ex: 2)'))
+        if type(item) == int and item < len(player_info.items):           
+            del player_info.items[item]
             print("Your items are now:")
+            ct = -1
             for i in player_info.items:
-                print(f'{ct++1} {i}')
+                ct += 1
+                print(ct, i)
+        elif item == 'q':
+            exit()
+        else: print('invalid choice')
+            
+    
 class GameControls(cmd.Cmd):
     prompt = '\n>> '
 
@@ -174,36 +183,41 @@ class GameControls(cmd.Cmd):
         print('I do not understand that command. Type "help" for a list of commands.')
 
     # A very simple "quit" command to terminate the program:
-    def do_quit(self, arg):
+    def do_q(self, arg):
         """Quit the game."""
         return True # this exits the Cmd application loop in GameControls.cmdloop()
     
-    def do_north(self, arg):
+    def do_n(self, arg):
         """Move somewhere. Quietly."""
         moveDirection('north')
     
-    def do_south(self, arg):
+    def do_s(self, arg):
         """Move somewhere. Quietly."""
         moveDirection('south')
     
-    def do_east(self, arg):
+    def do_e(self, arg):
         """Move somewhere. Quietly."""
         moveDirection('east')
     
-    def do_west(self, arg):
+    def do_w(self, arg):
         """Move somewhere. Quietly."""
         moveDirection('west')
     def do_location(self, arg):
         """Where am I?"""
         print(player_info.location)
+        
     def do_look(self, arg):
         """Be a nosy dungeon dweller"""
         look()
+        
     def do_take(self, arg):
+        """Take found items"""
         take()
+        
     def do_items(self, arg):
         """What's in the old bag?"""
         check_bag()
+        
     def do_drop(self, arg):
         """Bag is getting heavy. Leave an item. """
         drop()
