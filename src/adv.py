@@ -154,7 +154,18 @@ def check_bag():
         for i in player_info.items:
             print(i)
     
-                
+def drop():
+    if len(player_info.items) == 0:
+        print("There's nothing to drop.")
+    else:
+        ct = 0
+        for i in player_info.items:
+            print(f'{ct++1} {i}')
+            item = input('Select a number to drop an item. (ex: 2)')
+            player_info.items.remove(item)
+            print("Your items are now:")
+            for i in player_info.items:
+                print(f'{ct++1} {i}')
 class GameControls(cmd.Cmd):
     prompt = '\n>> '
 
@@ -193,6 +204,9 @@ class GameControls(cmd.Cmd):
     def do_items(self, arg):
         """What's in the old bag?"""
         check_bag()
+    def do_drop(self, arg):
+        """Bag is getting heavy. Leave an item. """
+        drop()
             
     def help_combat(self):
         print('Combat is not implemented in this program.')
